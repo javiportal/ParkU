@@ -1,0 +1,13 @@
+# Configuración para desplegar el frontend de ParkU en Netlify
+# El backend está en Render: https://parku-9bfn.onrender.com
+
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+# Redirecciones para SPA (React Router): todas las rutas van a index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
