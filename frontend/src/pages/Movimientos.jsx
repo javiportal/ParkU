@@ -19,7 +19,7 @@ function formatError(err) {
 
 export default function Movimientos() {
   const { isAdmin, isVigilante } = useAuth();
-  const canRegister = isAdmin || isVigilante;
+  const canRegister = isVigilante;
   const [activeMovements, setActiveMovements] = useState([]);
   const [historyMovements, setHistoryMovements] = useState([]);
   const [parkings, setParkings] = useState([]);
