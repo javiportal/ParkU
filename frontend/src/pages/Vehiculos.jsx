@@ -16,7 +16,8 @@ function formatError(err) {
 }
 
 export default function Vehiculos() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, isVigilante } = useAuth();
+  const canCreateVehicle = isAdmin || isVigilante;
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -96,7 +97,7 @@ export default function Vehiculos() {
           <h2 className="text-xl font-bold text-navy">Vehículos</h2>
           <p className="text-sm text-gray-400">{vehicles.length} vehículos registrados</p>
         </div>
-        {isAdmin && (
+        {canCreateVehicle && (
           <Button onClick={openCreate}>
             <Plus className="w-4 h-4" /> Nuevo Vehículo
           </Button>

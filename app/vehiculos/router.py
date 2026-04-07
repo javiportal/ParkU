@@ -17,12 +17,12 @@ admin_vigilante = require_role(["administrador", "vigilante"])
     response_model=VehiculoResponse,
     status_code=201,
     summary="Registrar vehículo",
-    description="Registra un vehículo autorizado. Solo administradores.",
+    description="Registra un vehículo autorizado. Administradores y vigilantes.",
 )
 def crear_vehiculo(
     data: VehiculoCreate,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(admin_only),
+    current_user: Usuario = Depends(admin_vigilante),
 ):
     service = VehiculoService(db)
     return service.crear_vehiculo(data)
