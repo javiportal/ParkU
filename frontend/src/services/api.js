@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// En producción usamos Render como respaldo si Netlify no inyectó VITE_API_URL.
+const productionApiUrl = 'https://parku-9bfn.onrender.com/api';
+const apiBaseUrl =
+  import.meta.env.VITE_API_URL || (import.meta.env.PROD ? productionApiUrl : '/api');
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: apiBaseUrl,
   headers: { 'Content-Type': 'application/json' },
 });
 

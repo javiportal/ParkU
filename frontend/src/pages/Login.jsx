@@ -25,8 +25,12 @@ export default function Login() {
         setError(detail.map((d) => d.msg).join(', '));
       } else if (typeof detail === 'string') {
         setError(detail);
+      } else if (err.response) {
+        setError(`Error del servidor (${err.response.status}). Verifica la conexión con el backend.`);
+      } else if (err.request) {
+        setError('No se pudo conectar con el backend. Revisa la configuración de Netlify.');
       } else {
-        setError('Credenciales incorrectas');
+        setError('No se pudo iniciar sesión.');
       }
     } finally {
       setLoading(false);
