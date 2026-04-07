@@ -27,20 +27,44 @@ def seed():
                 print(f"  Rol '{nombre}' creado.")
         db.commit()
 
-        # Create admin user if doesn't exist
-        admin_email = "admin@parku.edu.sv"
-        existing_admin = db.query(Usuario).filter(Usuario.email == admin_email).first()
-        if not existing_admin:
-            rol_admin = db.query(Rol).filter(Rol.nombre == "administrador").first()
-            admin = Usuario(
-                nombre="Admin ParkU",
-                email=admin_email,
-                contrasena=hash_password("admin123"),
-                rol_id=rol_admin.id,
+        # Create default users if they don't exist
+        usuarios_seed = [
+            {
+                "nombre": "Admin ParkU",
+                "email": "admin@parku.edu.sv",
+                "contrasena": "admin123",
+                "rol": "administrador",
+            },
+            {
+                "nombre": "Vigilante ParkU",
+                "email": "vigilante@parku.edu.sv",
+                "contrasena": "vigilante123",
+                "rol": "vigilante",
+            },
+        ]
+        for usuario_seed in usuarios_seed:
+            existing_user = (
+                db.query(Usuario)
+                .filter(Usuario.email == usuario_seed["email"])
+                .first()
             )
-            db.add(admin)
+            if existing_user:
+                continue
+
+            rol = db.query(Rol).filter(Rol.nombre == usuario_seed["rol"]).first()
+            usuario = Usuario(
+                nombre=usuario_seed["nombre"],
+                email=usuario_seed["email"],
+                contrasena=hash_password(usuario_seed["contrasena"]),
+                rol_id=rol.id,
+            )
+            db.add(usuario)
             db.commit()
-            print(f"  Usuario admin creado: {admin_email} / admin123")
+            print(
+                "  Usuario creado: "
+                f"{usuario_seed['email']} / {usuario_seed['contrasena']} "
+                f"({usuario_seed['rol']})"
+            )
 
         # Create default parking lot if doesn't exist
         existing_parqueo = db.query(Parqueo).first()
